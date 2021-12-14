@@ -8,7 +8,7 @@ import (
 	"github.com/ory/ladon"
 )
 
-// 调用顺序：
+// ywh: 调用顺序。
 // Config--> Client
 //    |        |
 // +--↓--------↓--------+
