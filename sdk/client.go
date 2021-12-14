@@ -58,7 +58,10 @@ func (c *Client) WithConfig(config *Config) *Client {
 
 // Send send the request and return the response to the client.
 // Parameter request accepts concrete request object which follow Request.
+// ywh: 构建并发起 HTTP 请求。
 func (c *Client) Send(req request.Request, resp response.Response) error {
+
+	// 构建请求 URL。
 	method := req.GetMethod()
 	builder := GetParameterBuilder(method, c.Logger)
 	jsonReq, _ := json.Marshal(req)
@@ -66,29 +69,32 @@ func (c *Client) Send(req request.Request, resp response.Response) error {
 	if err != nil {
 		return err
 	}
-
 	endPoint := c.Config.Endpoint
 	if endPoint == "" {
 		endPoint = fmt.Sprintf("%s/%s", defaultEndpoint, c.ServiceName)
 	}
 	reqUrl := fmt.Sprintf("%s://%s/%s%s", c.Config.Scheme, endPoint, req.GetVersion(), encodedUrl)
 
+	// 构建请求 Body。
 	body, err := builder.BuildBody(jsonReq)
 	if err != nil {
 		return err
 	}
 
+	// 签发并添加认证头。
 	sign := func(r *http.Request) error {
 		signer := NewSigner(c.signMethod, c.Credential, c.Logger)
 		_, err := signer.Sign(c.ServiceName, r, strings.NewReader(body))
 		return err
 	}
 
+	// 发起 HTTP 请求。
 	rawResponse, err := c.doSend(method, reqUrl, body, req.GetHeaders(), sign)
 	if err != nil {
 		return err
 	}
 
+	// 处理响应结果。
 	return response.ParseFromHttpResponse(rawResponse, resp)
 }
 

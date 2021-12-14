@@ -40,6 +40,9 @@ func ParseFromHttpResponse(rawResponse *http.Response, response Response) error 
 	if err != nil {
 		return err
 	}
+
+	// 判断响应状态，并执行响应的反序列化。
+
 	if rawResponse.StatusCode != 200 {
 		return fmt.Errorf("request fail with status: %s, with body: %s", rawResponse.Status, body)
 	}

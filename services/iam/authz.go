@@ -9,6 +9,8 @@ import (
 	"github.com/marmotedu/medu-sdk-go/sdk/response"
 )
 
+// ywh: API 请求结构体。
+
 type AuthzRequest struct {
 	*request.BaseRequest
 	// Resource is the resource that access is requested to.
@@ -32,6 +34,7 @@ type AuthzResponse struct {
 
 func NewAuthzRequest() (req *AuthzRequest) {
 	req = &AuthzRequest{
+		// 构建请求结构体。
 		BaseRequest: &request.BaseRequest{
 			URL:     "/authz",
 			Method:  "POST",
@@ -53,8 +56,10 @@ func (r *AuthzResponse) String() string {
 	return string(data)
 }
 
+// Authz 执行 REST API 调用
 func (c *Client) Authz(req *AuthzRequest) (resp *AuthzResponse, err error) {
 	if req == nil {
+		// 请求路径构建。
 		req = NewAuthzRequest()
 	}
 

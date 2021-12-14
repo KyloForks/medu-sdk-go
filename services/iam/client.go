@@ -7,6 +7,7 @@ const (
 	serviceName     = "iam"
 )
 
+// Client SDK 客户端，继承基础层的 Client。
 type Client struct {
 	sdk.Client
 }
@@ -21,6 +22,7 @@ func NewClient(config *sdk.Config, credential *sdk.Credential) (client *Client, 
 	return
 }
 
+// NewClientWithSecret 创建客户端：传入密钥、用户名、密码配置。
 func NewClientWithSecret(secretID, secretKey string) (client *Client, err error) {
 	client = &Client{}
 	config := sdk.NewConfig().WithEndpoint(defaultEndpoint)

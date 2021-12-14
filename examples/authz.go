@@ -8,6 +8,13 @@ import (
 	"github.com/ory/ladon"
 )
 
+// 调用顺序：
+// Config--> Client
+//    |        |
+// +--↓--------↓--------+
+// | Builder     Signer |
+// +-----------↓--------+
+//           Request
 func main() {
 	client, _ := iam.NewClientWithSecret("XhbY3aCrfjdYcP1OFJRu9xcno8JzSbUIvGE2", "bfJRvlFwsoW9L30DlG87BBW0arJamSeK")
 
